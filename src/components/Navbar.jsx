@@ -5,7 +5,7 @@ import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 // Register ScrollToPlugin
 gsap.registerPlugin(ScrollToPlugin);
 
-const Navbar = () => {
+const Navbar = ({ theme, toggleTheme }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
@@ -66,7 +66,7 @@ const Navbar = () => {
   return (
     <nav 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-black/80 backdrop-blur-md shadow-lg' : 'bg-transparent'
+        isScrolled ? 'nav-bg backdrop-blur-md shadow-lg' : 'bg-transparent'
       }`}
     >
       <div className="max-w-7xl mx-auto px-6">
@@ -93,23 +93,57 @@ const Navbar = () => {
               >
                 <span className={`text-sm font-medium transition-colors duration-200 ${
                   activeSection === item.id
-                    ? 'text-blue-500'
-                    : 'text-gray-300 group-hover:text-blue-500'
+                    ? 'accent'
+                    : 'text-[var(--nav-text)] group-hover:text-[var(--nav-text-hover)]'
                 }`}>
                   {item.label}
                 </span>
-                <span className={`absolute -bottom-1 left-0 w-full h-0.5 bg-blue-500 transform origin-left transition-transform duration-200 ${
+                <span className={`absolute -bottom-1 left-0 w-full h-0.5 bg-accent transform origin-left transition-transform duration-200 ${
                   activeSection === item.id ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
                 }`}></span>
               </button>
             ))}
+            
+            {/* Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-lg text-[var(--nav-text)] hover:bg-secondary transition-colors duration-200"
+              aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
+            >
+              {theme === 'light' ? (
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+              ) : (
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+              )}
+            </button>
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center space-x-4">
+            {/* Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-lg text-[var(--nav-text)] hover:bg-secondary transition-colors duration-200"
+              aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
+            >
+              {theme === 'light' ? (
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+              ) : (
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+              )}
+            </button>
+            
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-700/50 focus:outline-none"
+              className="inline-flex items-center justify-center p-2 rounded-lg text-[var(--nav-text)] hover:bg-secondary focus:outline-none"
               aria-expanded={isOpen}
             >
               <span className="sr-only">Open main menu</span>
@@ -130,8 +164,8 @@ const Navbar = () => {
       {/* Mobile menu */}
       <div 
         className={`md:hidden transition-all duration-300 ease-in-out ${
-          isOpen ? 'max-h-64 border-t border-gray-800' : 'max-h-0'
-        } overflow-hidden bg-black/95 backdrop-blur-md`}
+          isOpen ? 'max-h-64 border-t border-theme' : 'max-h-0'
+        } overflow-hidden nav-bg backdrop-blur-md`}
       >
         <div className="px-4 py-2 space-y-1">
           {navItems.map((item) => (
@@ -140,8 +174,8 @@ const Navbar = () => {
               onClick={() => scrollToSection(item.id)}
               className={`w-full text-left px-4 py-3 rounded-lg text-base font-medium transition-colors duration-200 ${
                 activeSection === item.id
-                  ? 'text-blue-500 bg-blue-500/10'
-                  : 'text-gray-300 hover:text-blue-500 hover:bg-gray-800/50'
+                  ? 'accent bg-accent/10'
+                  : 'text-[var(--nav-text)] hover:text-[var(--nav-text-hover)] hover:bg-secondary/50'
               }`}
             >
               {item.label}

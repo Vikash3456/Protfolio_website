@@ -2,10 +2,6 @@ import React, { useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Hero from './Hero';
-import About from './About';
-import Experience from './Experience';
-import Projects from './Projects';
-import Contact from './Contact';
 
 // Register ScrollTrigger
 gsap.registerPlugin(ScrollTrigger);
@@ -53,12 +49,8 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="bg-black">
+    <div className="bg-primary transition-colors duration-300">
       <Hero />
-      <About />
-      <Experience />
-      <Projects />
-      <Contact />
     </div>
   );
 };
